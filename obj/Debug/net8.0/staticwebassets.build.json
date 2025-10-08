@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "pWa/JQlnR7gXb2y2VFO16q140qXf/0iyQWCOALddRmE=",
+  "Source": "ApiTask",
+  "BasePath": "_content/ApiTask",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ApiTask\\wwwroot",
+      "Source": "ApiTask",
+      "ContentRoot": "C:\\Users\\juanc\\Documents\\PROGRAMACION\\.NET\\GESTOR DE TAREAS\\ApiTask\\wwwroot\\",
+      "BasePath": "_content/ApiTask",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\juanc\\Documents\\PROGRAMACION\\.NET\\GESTOR DE TAREAS\\ApiTask\\wwwroot\\index.html",
+      "SourceId": "ApiTask",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\juanc\\Documents\\PROGRAMACION\\.NET\\GESTOR DE TAREAS\\ApiTask\\wwwroot\\",
+      "BasePath": "_content/ApiTask",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    }
+  ]
+}

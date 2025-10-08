@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tareas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 min-h-screen flex flex-col items-center justify-center">
+  <div class="w-full max-w-md mx-auto bg-white rounded-2xl shadow-xl p-6 mt-8">
+    <h1 class="text-3xl font-extrabold text-center text-blue-600 mb-6 tracking-tight flex items-center justify-center gap-2">
+      <span>📝</span> Mis Tareas
+    </h1>
+
+    <form id="taskForm" class="flex gap-2 mb-6">
+      <input id="taskInput" type="text" placeholder="Nueva tarea..." class="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400 transition" />
+      <button id="addBtn" class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-5 py-3 rounded-lg font-semibold shadow hover:scale-105 transition">Agregar</button>
+    </form>
+
+    <div id="loading" class="flex justify-center items-center py-6 hidden">
+      <svg class="animate-spin h-6 w-6 text-blue-500 mr-2" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+      </svg>
+      <span class="text-blue-500 font-medium">Cargando tareas...</span>
+    </div>
+
+    <ul id="taskList" class="space-y-3"></ul>
+    <div id="emptyState" class="text-center text-gray-400 py-6 hidden">
+      <span class="text-2xl">😴</span>
+      <div class="mt-2">No hay tareas por ahora</div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "http://localhost:5198/api/tasks";
+    const loadingDiv = document.getElementById("loading");
+    const emptyStateDiv = document.getElementById("emptyState");
+    const addBtn = document.getElementById("addBtn");
+
+    function setLoading(isLoading) {
+      loadingDiv.style.display = isLoading ? "flex" : "none";
+      addBtn.disabled = isLoading;
+      addBtn.classList.toggle("opacity-50", isLoading);
+      addBtn.classList.toggle("cursor-not-allowed", isLoading);
+    }
+
+    async function loadTasks() {
+      setLoading(true);
+      emptyStateDiv.style.display = "none";
+      const list = document.getElementById("taskList");
+      list.innerHTML = "";
+      try {
+        const res = await fetch(API_URL);
+        const tasks = await res.json();
+        if (tasks.length === 0) {
+          emptyStateDiv.style.display = "block";
+        } else {
+          tasks.forEach(t => {
+            const li = document.createElement("li");
+            li.className = "flex justify-between items-center bg-gray-50 rounded-xl shadow p-4 hover:bg-blue-50 transition";
+            li.innerHTML = `
+              <span class="flex-1 ${t.isCompleted ? 'line-through text-gray-400' : 'text-gray-700 font-medium'}">${t.title}</span>
+              <div class="flex gap-2">
+                ${!t.isCompleted ? `<button onclick="completeTask(${t.id})" class="bg-green-100 text-green-600 rounded-full px-3 py-1 hover:bg-green-200 transition">✔️</button>` : ""}
+                <button onclick="deleteTask(${t.id})" class="bg-red-100 text-red-600 rounded-full px-3 py-1 hover:bg-red-200 transition">🗑️</button>
+              </div>
+            `;
+            list.appendChild(li);
+          });
+        }
+      } catch (err) {
+        emptyStateDiv.style.display = "block";
+        emptyStateDiv.innerHTML = `<span class="text-red-400">Error al cargar tareas</span>`;
+      }
+      setLoading(false);
+    }
+
+    async function addTask(e) {
+      e.preventDefault();
+      const input = document.getElementById("taskInput");
+      const title = input.value.trim();
+      if (!title) return alert("Escriba una tarea");
+
+      setLoading(true);
+      try {
+        await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title })
+        });
+        input.value = "";
+        await loadTasks();
+      } catch {
+        alert("Error al agregar tarea");
+      }
+      setLoading(false);
+    }
+
+    async function completeTask(id) {
+      setLoading(true);
+      try {
+        await fetch(`${API_URL}/${id}/complete`, { method: "PUT" });
+        await loadTasks();
+      } catch {
+        alert("Error al marcar como completada");
+      }
+      setLoading(false);
+    }
+
+    async function deleteTask(id) {
+      setLoading(true);
+      try {
+        await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+        await loadTasks();
+      } catch {
+        alert("Error al eliminar tarea");
+      }
+      setLoading(false);
+    }
+
+    document.getElementById("taskForm").addEventListener("submit", addTask);
+    loadTasks();
+  </script>
+</body>
+</html>
