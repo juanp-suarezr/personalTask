@@ -160,3 +160,4 @@ C:\Users\juanc\Documents\PROGRAMACION\.NET\GESTOR DE TAREAS\ApiTask\bin\Debug\ne
 C:\Users\juanc\Documents\PROGRAMACION\.NET\GESTOR DE TAREAS\ApiTask\bin\Debug\net8.0\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\juanc\Documents\PROGRAMACION\.NET\GESTOR DE TAREAS\ApiTask\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 C:\Users\juanc\Documents\PROGRAMACION\.NET\GESTOR DE TAREAS\ApiTask\bin\Debug\net8.0\ApiTask.staticwebassets.runtime.json
+C:\Users\juanc\Documents\PROGRAMACION\.NET\GESTOR DE TAREAS\ApiTask\obj\Debug\net8.0\ApiTask.sourcelink.json
